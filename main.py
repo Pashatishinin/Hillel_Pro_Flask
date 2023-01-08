@@ -85,8 +85,8 @@ def mean():
             w += float(row.get(' "Weight(Pounds)"'))
             count += 1
         print(h, w, count)
-        middle_height = h/count
-        middle_weight = w/count
+        middle_height = (h/count)*2.54
+        middle_weight = (w/count)*0.45
     return render_template('mean.html', height=middle_height, weight=middle_weight)
 
 
