@@ -1,16 +1,9 @@
 from flask import Flask, render_template, url_for, request
-import urllib
 from random import randint
 import csv
-from flask_csv import send_csv
+import requests
 
 app = Flask(__name__)
-
-
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
 
 if __name__ == "__main__":
     app.run()
@@ -54,7 +47,8 @@ def generate_users():
 
         return users_dict
 
-    #Парсим
+
+    #Парсим query
     args = request.args
     new_dict = dict(args)
 
@@ -90,8 +84,10 @@ def mean():
     return render_template('mean.html', height=middle_height, weight=middle_weight)
 
 
-
-
-
-
-
+@app.route("/space/")
+def space():
+    r = requests.get('http://api.open-notify.org/astros.json')
+    r.json()
+    new_dict = dict(r.json())
+    people = new_dict.get('people')
+    return render_template('space.html', number=len(people), people=people)
