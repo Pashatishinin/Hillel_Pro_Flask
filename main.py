@@ -2,11 +2,6 @@ from flask import Flask, render_template, url_for, request
 import urllib
 from random import randint
 import csv
-from urllib.parse import urlparse
-from http.cookies import SimpleCookie
-
-
-
 from flask_csv import send_csv
 
 app = Flask(__name__)
@@ -76,6 +71,23 @@ def generate_users():
 
     req = open("generate_users.txt")
     return render_template('generate_users.html', generate_users_string=req.read(), number=number)
+
+
+@app.route("/mean/")
+def mean():
+    with open('hw.csv', "r", newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        count = 0
+        h = 0.0
+        w = 0.0
+        for row in reader:
+            h += float(row.get(' "Height(Inches)"'))
+            w += float(row.get(' "Weight(Pounds)"'))
+            count += 1
+        print(h, w, count)
+        middle_height = h/count
+        middle_weight = w/count
+    return render_template('mean.html', height=middle_height, weight=middle_weight)
 
 
 
