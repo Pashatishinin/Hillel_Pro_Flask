@@ -55,12 +55,7 @@ def generate_users():
     for _ in range(int(request.args.get('count', 1))):
         user_all_dict.append(randomizer())
 
-    with open("generate_users.txt", 'w') as file:
-        file.write(str(user_all_dict))
-
-    with open("generate_users.txt", 'r') as file:
-        req = file.read()
-    return render_template('generate_users.html', generate_users_string=req, number=str(request.args.get('count', 1)))
+    return render_template('generate_users.html', generate_users_string=user_all_dict, number=str(request.args.get('count', 1)))
 
 
 @app.route("/mean/")
