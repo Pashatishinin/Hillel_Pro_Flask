@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, render_template, url_for, request
 from random import randint
 import csv
@@ -12,60 +14,53 @@ if __name__ == "__main__":
 
 @app.route("/requirements/")
 def requirements():
-    req = open("requirements.txt")
-    return render_template('requirements.html', requirements_string=f'{url_for}')
+    with open("requirements.txt", 'r') as file:
+        req = file.read()
+    return render_template('requirements.html', requirements_string=req)
 
-
-@app.route("/generate-users/")
-@app.route("/generate-users/", methods=['GET'])
-def generate_users():
-    user_all_dict = []
-
-    def randomizer():
+#Генератор случайных имен
+def randomizer():
         # Список имен
-        name_list = ["Aleksandr", "Sasha", "Alexey", "Alyosha", "Albert", "Alik", "Anatoly", "Andrey", "Anton",
+    name_list = ["Aleksandr", "Sasha", "Alexey", "Alyosha", "Albert", "Alik", "Anatoly", "Andrey", "Anton",
                      "Antosha", "Arkadiy", "Artem", "Artur", "Arkhip", "Afanasii", "Boris", "Bronislav", "Vadim",
                      "Valentin", "Valya", "Valeriy", "Vasily", "Viktor", "Vitaly", "Vladimir", "Vladislav", "Vsevolod",
                      "Vyacheslav"]
         # Радномайзер числа для списка имен
-        ran_name_number = randint(0, len(name_list) - 1)
+    ran_name_number = randint(0, len(name_list) - 1)
         # Имя из списка под рандомный номером
-        random_first_name = name_list[ran_name_number]
+    random_first_name = name_list[ran_name_number]
         # Cписок почтовых ящиков
-        mail_list = ["gmail.com", "yahoo.com", "urk.net"]
+    mail_list = ["gmail.com", "yahoo.com", "urk.net"]
         # Радномайзер числа для списка почтовых ящиков
-        ran_mail_number = randint(0, len(mail_list) - 1)
+    ran_mail_number = randint(0, len(mail_list) - 1)
         # Почтовый ящик из списка под рандомный номером
-        random_mailbox = mail_list[ran_mail_number]
-        random_name = ''
+    random_mailbox = mail_list[ran_mail_number]
+    random_name = ''
         # Генератор имени для почтового ящика, который генерируется только из букв имени
-        for _ in range(7):
-            ran_mail_name_number = randint(0, len(random_first_name) - 1)
-            random_name += random_first_name.lower()[ran_mail_name_number]
+    for _ in range(7):
+        ran_mail_name_number = randint(0, len(random_first_name) - 1)
+        random_name += random_first_name.lower()[ran_mail_name_number]
 
-        mail_post = random_name + "@" + random_mailbox
-        users_dict = {"User Name": random_first_name, "Email": mail_post}
+    mail_post = random_name + "@" + random_mailbox
+    users_dict = {"User Name": random_first_name, "Email": mail_post}
 
-        return users_dict
+    return users_dict
 
 
-    #Парсим query
-    args = request.args
-    new_dict = dict(args)
 
-    if new_dict.get('count'):
-        for _ in range(int(new_dict.get('count'))):
-            user_all_dict.append(randomizer())
-        number = int(new_dict.get('count'))
-    else:
+@app.route("/generate-users/")
+def generate_users():
+    user_all_dict = []
+
+    for _ in range(int(request.args.get('count', 1))):
         user_all_dict.append(randomizer())
-        number = 1
 
     with open("generate_users.txt", 'w') as file:
         file.write(str(user_all_dict))
 
-    req = open("generate_users.txt")
-    return render_template('generate_users.html', generate_users_string=req.read(), number=number)
+    with open("generate_users.txt", 'r') as file:
+        req = file.read()
+    return render_template('generate_users.html', generate_users_string=req, number=str(request.args.get('count', 1)))
 
 
 @app.route("/mean/")
@@ -88,7 +83,5 @@ def mean():
 @app.route("/space/")
 def space():
     r = requests.get('http://api.open-notify.org/astros.json')
-    r.json()
-    new_dict = dict(r.json())
-    people = new_dict.get('people')
-    return render_template('space.html', number=len(people), people=people)
+    people = json.loads(r.text)
+    return render_template('space.html', number=len(people['people']), people=people)
