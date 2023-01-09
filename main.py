@@ -12,8 +12,9 @@ if __name__ == "__main__":
 
 @app.route("/requirements/")
 def requirements():
-    req = open("requirements.txt")
-    return render_template('requirements.html', requirements_string=f'{url_for}')
+    with open("requirements.txt", 'r') as file:
+        req = file.read()
+    return render_template('requirements.html', requirements_string=req)
 
 
 @app.route("/generate-users/")
