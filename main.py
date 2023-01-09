@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, render_template, url_for, request
 from random import randint
 import csv
@@ -81,7 +83,5 @@ def mean():
 @app.route("/space/")
 def space():
     r = requests.get('http://api.open-notify.org/astros.json')
-    r.json()
-    new_dict = dict(r.json())
-    people = new_dict.get('people')
-    return render_template('space.html', number=len(people), people=people)
+    people = json.loads(r.text)
+    return render_template('space.html', number=len(people['people']), people=people)
