@@ -1,0 +1,62 @@
+{
+  "1": {
+    "title": "WHEN GOD SHUT THE DOOR",
+    "artist": "Jerry Heil",
+    "genre" : "Pop",
+    "length": 147
+  },
+  "2": {
+    "title": "2step",
+    "artist": "Ed Sheeran",
+    "genre" : "Pop",
+    "length": 207
+  },
+  "3": {
+    "title": "I'm Not The Only One",
+    "artist": "Sam Smith",
+    "genre" : "Pop",
+    "length": 279
+  },
+  "4": {
+    "title": "Too Good At Goodbyes",
+    "artist": "Sam Smith",
+    "genre" : "Pop",
+    "length": 264
+  },
+  "5": {
+    "title": "Iron Sky",
+    "artist": "Paolo Nutini",
+    "genre" : "Pop",
+    "length": 381
+  },
+  "6": {
+    "title": "Where Is The Love?",
+    "artist": "The Black Eyed Peas",
+    "genre" : "Hip-Hop",
+    "length": 252
+  },
+  "7": {
+    "title": "Venom",
+    "artist": "Eminem",
+    "genre" : "Rap",
+    "length": 295
+  },
+  "8": {
+    "title": "Heavy",
+    "artist": "Linkin Park",
+    "genre" : "Alternative",
+    "length": 168
+  },
+  "9": {
+    "title": "In The End",
+    "artist": "Linkin Park",
+    "genre" : "Alternative",
+    "length": 219
+  },
+  "10": {
+    "title": "Won't Back Down",
+    "artist": "Eminem",
+    "genre" : "Rap",
+    "length": 265
+  }
+}
