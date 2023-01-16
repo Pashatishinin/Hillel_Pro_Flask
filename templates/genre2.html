@@ -8,15 +8,15 @@
 {% endblock %}
 
 {% block content %}
-  {% for post in posts %}
+  {% for tracks in posts %}
     <article class="post">
       <header>
         <div>
-          <h1>{{ post['title'] }}</h1>
-          <div class="about">{{ post['artist'] }}</div>
-          <div class="about">{{ post['genre'] }}</div>
+          <h1>{{ tracks['title'] }}</h1>
+          <div class="about">{{ tracks['artist'] }}</div>
+          <div class="about">{{ tracks['genre'] }}</div>
         </div>
-        {% if g.user['id'] == post['author_id'] %}
+        {% if g.user['id'] == tracks['author_id'] %}
         {% endif %}
       </header>
     </article>

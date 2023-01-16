@@ -8,14 +8,14 @@
 {% endblock %}
 
 {% block content %}
-  {% for post in posts %}
+  {% for tracks in posts %}
     <article class="post">
       <header>
         <div>
-          <div class="about">{{ post['summary'] }} Total amount seconds of all tracks in track list </div>
-          <div class="about">{{ post['middle'] }} Average number of seconds of all tracks in track list </div>
+          <div class="about">{{ tracks['summary'] }} Total amount seconds of all tracks in track list </div>
+          <div class="about">{{ tracks['middle'] }} Average number of seconds of all tracks in track list </div>
         </div>
-        {% if g.user['id'] == post['author_id'] %}
+        {% if g.user['id'] == tracks['author_id'] %}
         {% endif %}
       </header>
     </article>
