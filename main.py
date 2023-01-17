@@ -3,6 +3,8 @@ import os
 
 from flask import Flask, render_template, request
 
+from db import get_db
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -28,16 +30,80 @@ def create_app(test_config=None):
     import db
     db.init_app(app)
 
-    import auth
-    app.register_blueprint(auth.bp)
-
-    import blog
-    app.register_blueprint(blog.bp)
-    app.add_url_rule('/', endpoint='index')
-
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    create_views(app)
 
     return app
+
+
+def create_views(app):
+
+    @app.route('/')
+    def index():
+        db = get_db()
+        posts = db.execute(
+            'SELECT * FROM tracks'
+        ).fetchall()
+        return render_template('blog/index.html', posts=posts)
+
+    @app.route('/names/')
+    def names():
+        db = get_db()
+        unique_names = db.execute(
+            'SELECT COUNT(DISTINCT artist) as count FROM tracks'
+        )
+        return render_template('names.html', posts=unique_names)
+
+    # TRACKS
+    @app.route('/tracks/')
+    def tracks():
+        db = get_db()
+        tracks_number = db.execute(
+            'SELECT COUNT(*) as count FROM tracks'
+        )
+        return render_template('tracks.html', posts=tracks_number)
+
+    # GENRE
+    @app.route('/tracks/<genre>')
+    def new_genre(genre):
+        db = get_db()
+        genre_select = db.execute(
+            f"SELECT * FROM tracks WHERE genre = '{genre}'",
+        ).fetchall()
+
+        return render_template('genre2.html', posts=genre_select, genres=genre)
+
+    # GENRE VERSION 2
+    @app.route('/tracks/genre', methods=('GET', 'POST'))
+    def genre():
+        db = get_db()
+        if request.method == 'POST':
+            genre_insert = request.form['genre']
+            error = None
+
+            genre_select = db.execute(
+                f"SELECT * FROM tracks WHERE genre = '{genre_insert}'",
+            ).fetchall()
+
+            return render_template('genre2.html', posts=genre_select, genres=genre_insert)
+
+        return render_template('genre.html')
+
+    # TRACKS | SECONDS
+    @app.route('/tracks-sec/')
+    def tracks_sec():
+        db = get_db()
+        tracks_number = db.execute(
+            'SELECT title, length FROM tracks'
+        ).fetchall()
+        return render_template('tracks-sec.html', posts=tracks_number)
+
+    # STATISCTICS
+    @app.route('/tracks-sec/statistics/')
+    def statistics():
+        db = get_db()
+        tracks_number = db.execute(
+            'SELECT SUM(length) as summary, AVG(length) as middle FROM tracks'
+        ).fetchall()
+        return render_template('statistics.html', posts=tracks_number)
+
+

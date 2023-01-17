@@ -56,9 +56,9 @@ def load_fixtures():
         fixture: dict = json.load(json_file)
         for a in fixture.values():
             db.execute(
-                'INSERT INTO post (author_id, title, artist, genre, length)'
-                ' VALUES (?, ?, ?, ?, ?)',
-                (1, a.get('title'), a.get('artist'), a.get('genre'), a.get('length'),))
+                'INSERT INTO tracks (title, artist, genre, length)'
+                ' VALUES (?, ?, ?, ?)',
+                (a.get('title'), a.get('artist'), a.get('genre'), a.get('length'),))
     db.commit()
 
 
