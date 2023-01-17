@@ -14,8 +14,6 @@
         <div>
           <h1>{{ tracks['count'] }} unique artist in track list</h1>
         </div>
-        {% if g.user['id'] == tracks['author_id'] %}
-        {% endif %}
       </header>
     </article>
     {% if not loop.last %}
